@@ -27,6 +27,7 @@ import com.theta360.pluginlibrary.activity.PluginActivity;
 import com.theta360.pluginlibrary.callback.KeyCallback;
 import com.theta360.pluginlibrary.receiver.KeyReceiver;
 import com.theta360.pluginlibrary.values.LedColor;
+import com.theta360.pluginlibrary.values.LedTarget;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
@@ -182,7 +183,7 @@ public class MainActivity extends PluginActivity implements CvCameraViewListener
         Imgproc.medianBlur(gray,gray, 5);
 
         Mat circles = new Mat();
-        Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0, (double)gray.rows()/16, 100.0, 30.0, 1, 30);
+        Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0, (double)gray.rows()/16, 100.0, 30.0, 10, 30);
 
         mOutputFrame = inputFrame.rgba();
 
@@ -205,10 +206,12 @@ public class MainActivity extends PluginActivity implements CvCameraViewListener
                  * 1. During a taking picture process, the preview sequence is stopped.
                  * 2. The taken picture is saved slightly later than the detected frame.
                  */
-                notificationLed3Show(LedColor.MAGENTA);
+
+                notificationLedHide(LedTarget.LED4);
+                //notificationLed3Show(LedColor.MAGENTA);
                 takePicture(dateTimeStr);
                 saveProcessWindow(mOutputFrame, dateTimeStr);
-                notificationLed3Show(LedColor.WHITE);
+                notificationLedShow(LedTarget.LED4);
             }
         }
 
